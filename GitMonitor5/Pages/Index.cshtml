@@ -1,0 +1,146 @@
+﻿@page
+@using System.Text.Encodings.Web
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+<div class="row">
+    <div class="col-12">
+        @if (Model != null)
+        {
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item"><a class="nav-link active" href="#allcommits" data-toggle="tab"><small>All - @Model.MPConfig.ActiveMonitoredPath.Commits.Count</small></a></li>
+                @foreach (var repo in @Model.MPConfig.ActiveMonitoredPath.Repositories)
+                {
+                    if (repo.CommitCount > 0)
+                    {
+                        <li class="nav-item"><a class="nav-link" href="#@UrlEncoder.Default.Encode(@repo.FriendlyName)" data-toggle="tab"><small>@repo.FriendlyName - @repo.CommitCount</small></a></li>
+                    }
+                }
+            </ul>
+            <div id="myTabContent" class="tab-content">
+                <div class="tab-pane show active" role="tabpanel" id="allcommits">
+                    <table class="table table-hover table-sm table-responsive table-ultracondensed">
+                        <thead class="thead-default">
+                            <tr>
+                                <th></th>
+                                <th>Repository</th>
+                                <th>Date</th>
+                                <th>User</th>
+                                <th>Sha</th>
+                                <th class="col-md-12">Message</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var commit in @Model.MPConfig.ActiveMonitoredPath.Commits)
+                            {
+                                <tr>
+                                    <td>
+                                        <i class="fa fa-external-link" data-sha="@commit.Sha" onclick="GetCommit(this)" aria-hidden="true"></i>
+                                    </td>
+                                    <td nowrap>@commit.RepositoryFriendlyName</td>
+                                    @if (@commit.CommitterWhen.ToString("dd MMM yyy") == DateTime.Now.ToString("dd MMM yyy"))
+                                    {
+                                        <td nowrap>@commit.CommitterWhen.ToString("HH:mm") </td>
+                                    }
+                                    else if (@commit.CommitterWhen > DateTime.UtcNow.AddDays(-7))
+                                    {
+                                        <td nowrap>@commit.CommitterWhen.ToString("ddd HH:mm") </td>
+                                    }
+                                    else
+                                    {
+                                        <td nowrap>@commit.CommitterWhen.ToString("dd MMM yy") </td>
+                                    }
+                                    <td nowrap>@commit.Author</td>
+                                    @if (string.IsNullOrWhiteSpace(@commit.CommitUrl))
+                                    {
+                                        <td>@commit.Sha</td>
+                                    }
+                                    else
+                                    {
+                                        <td><a href="@commit.CommitUrl" target="_blank">@commit.Sha</a></td>
+                                    }
+                                    @if (@commit.IsMerge)
+                                    {
+                                        <td>
+                                            <p class="text-muted">@commit.Message</p>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>@commit.Message</td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                @foreach (var mp in @Model.MPConfig.ActiveMonitoredPath.Repositories)
+                {
+                    if (mp.CommitCount > 0)
+                    {
+                        <div class="tab-pane" role="tabpanel" id="@mp.FriendlyName">
+                            <table class="table table-hover table-sm table-responsive">
+                                <thead class="thead-default">
+                                    <tr>
+                                        <th></th>
+                                        <th>Repository</th>
+                                        <th>Date</th>
+                                        <th>User</th>
+                                        <th>Sha</th>
+                                        <th class="col-md-12">Message</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var commit in @Model.MPConfig.ActiveMonitoredPath.Commits)
+                                    {
+                                        if (@mp.FriendlyName == @commit.RepositoryFriendlyName)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <i class="fa fa-external-link" data-sha="@commit.Sha" onclick="GetCommit(this)" aria-hidden="true"></i>
+                                                </td>
+                                                <td nowrap>@commit.RepositoryFriendlyName</td>
+                                                @if (@commit.CommitterWhen.ToString("dd MMM yyy") == DateTime.Now.ToString("dd MMM yyy"))
+                                                {
+                                                    <td nowrap>@commit.CommitterWhen.ToString("HH:mm") </td>
+                                                }
+                                                else if (@commit.CommitterWhen > DateTime.UtcNow.AddDays(-7))
+                                                {
+                                                    <td nowrap>@commit.CommitterWhen.ToString("ddd HH:mm") </td>
+                                                }
+                                                else
+                                                {
+                                                    <td nowrap>@commit.CommitterWhen.ToString("dd MMM yy") </td>
+                                                }
+                                                <td nowrap>@commit.Author</td>
+                                                @if (string.IsNullOrWhiteSpace(@commit.CommitUrl))
+                                                {
+                                                    <td>@commit.Sha</td>
+                                                }
+                                                else
+                                                {
+                                                    <td><a href="@commit.CommitUrl" target="_blank">@commit.Sha</a></td>
+                                                }
+                                                @if (@commit.IsMerge)
+                                                {
+                                                    <td>
+                                                        <p class="text-muted">@commit.Message</p>
+                                                    </td>
+                                                }
+                                                else
+                                                {
+                                                    <td>@commit.Message</td>
+                                                }
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                }
+            </div>
+        }
+    </div>
+</div>

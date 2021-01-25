@@ -1,0 +1,37 @@
+{
+  "MonitoredPathConfig": {
+    "DefaultDays": "-3",
+    "DefaultRemote": "origin",
+    "DefaultBranch": "master",
+    "DefaultUserNameExcludeFilter": "ServiceUser",
+    "MonitoredPaths": [
+      {
+        "Path": "c:\\gitcode",
+        "Name": "Default",
+        "AllowFetch": true,
+        "AllFolders": true
+      },
+      {
+        "Path": "c:\\gitcode\\githubtrack",
+        "Name": "github track",
+        "AllFolders": true,
+        "AllowFetch": true,
+        "Days": "-10",
+        "Repositories": [
+          {
+            "Name": "ilspy",
+            "CommitUrl": "https://github.com/icsharpcode/ILSpy/commit/",
+            "Remote": "origin",
+            "Branch": "master"
+          },
+          {
+            "Name": "libgit2sharp",
+            "CommitUrl": "https://github.com/libgit2/libgit2sharp/commit/",
+            "Remote": "origin",
+            "Branch": "master"
+          }
+        ]
+      }
+    ]
+  }
+}
