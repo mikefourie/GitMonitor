@@ -6,8 +6,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="wwwroot\" />
-    <PackageReference Include="LibGit2Sharp" Version="0.25.4" />
-    <PackageReference Include="Microsoft.AspNetCore.All"/>
+    <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
+    <PackageReference Include="Microsoft.AspNetCore.All" />
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
   </ItemGroup>
 </Project>
