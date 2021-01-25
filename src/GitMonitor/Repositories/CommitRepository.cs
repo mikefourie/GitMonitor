@@ -295,7 +295,7 @@ namespace GitMonitor.Repositories
                             {
                                 try
                                 {
-                                    using (var repo = new Repository(dir.FullName))
+                                    using (Repository repo = new Repository(dir.FullName))
                                     {
                                         string logMessage = string.Empty;
                                         Remote remote = repo.Network.Remotes["origin"];
@@ -437,7 +437,7 @@ namespace GitMonitor.Repositories
                 try
                 {
                     GitRepository gitrepo = this.TryGetRepo(monitoredPath, dir.Name);
-                    using (var repo = new Repository(dir.FullName))
+                    using (Repository repo = new Repository(dir.FullName))
                     {
                         int commitCount = 0;
                         if (string.IsNullOrEmpty(branchName))
@@ -547,7 +547,7 @@ namespace GitMonitor.Repositories
 
             if (days > 0)
             {
-                days = days * -1;
+                days *= -1;
             }
 
             MonitoredPath newmonitoredPath = new MonitoredPath();
@@ -556,7 +556,7 @@ namespace GitMonitor.Repositories
                 try
                 {
                     GitRepository gitrepo = this.TryGetRepo(monitoredPath, dir.Name);
-                    using (var repo = new Repository(dir.FullName))
+                    using (Repository repo = new Repository(dir.FullName))
                     {
                         DateTime startDate = DateTime.Now.AddDays(days);
                         int commitCount = 0;
@@ -676,7 +676,7 @@ namespace GitMonitor.Repositories
 
                             if (com != null)
                             {
-                                var comFilter = new CommitFilter
+                                CommitFilter comFilter = new CommitFilter
                                 {
                                     IncludeReachableFrom = branch,
                                     ExcludeReachableFrom = com
